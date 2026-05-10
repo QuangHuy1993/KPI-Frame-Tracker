@@ -1,0 +1,25 @@
+---
+description: Standard schedule and non-working time rules
+alwaysApply: true
+---
+
+# Time Work — Standard Schedule
+
+## Working schedule (effective time)
+
+- **Working**: 08:30–12:00
+- **Lunch break (non-working)**: 12:00–13:00
+- **Working**: 13:00–17:30
+- Total effective work time: **8 hours/day** (3.5 + 4.5)
+
+## Non-working time rules (must be enforced everywhere)
+
+- **Lunch**: 12:00 → 13:00 is always non-working.
+- **After work**: after 17:30 → next day 08:30 is non-working.
+- **Sunday**: skip to Monday 08:30.
+
+## Implementation guidance
+
+- Any function that adds durations to time must add **working minutes only**.
+- Never “approximate” by adding raw minutes across breaks/off-hours; must iterate schedule blocks.
+

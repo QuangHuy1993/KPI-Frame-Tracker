@@ -1,0 +1,38 @@
+---
+description: UI layout rules (left form, right dashboard, colors, realtime)
+alwaysApply: true
+---
+
+# UI Structure Rules
+
+## Layout
+
+- **Left panel**: Task Form
+  - task name
+  - rank
+  - total frames
+  - completed frames
+  - frame/hour
+  - start time
+- **Right panel**: Dashboard
+  - Remaining Frames
+  - Progress %
+  - Deadline
+  - Frame/hour
+  - KPI Status
+  - Remaining Time
+  - Working Days Left
+
+## Color system
+
+- ON TRACK: Green → design token **success** (`#16A34A`, `var(--color-success)`)
+- WARNING: Orange → **warning** (`#D97706`)
+- LATE: Red → **danger** (`#DC2626`)
+
+Chi tiết typography, spacing, depth và a11y: rule `08-perspective-design-system.mdc`.
+
+## Realtime update
+
+- Update dashboard every second (`setInterval(..., 1000)`).
+- KPI warning must be visible and prominent when at risk.
+

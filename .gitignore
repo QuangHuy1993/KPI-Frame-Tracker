@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.node_repl_history
+
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+node_modules/
+dist/
+.cache/
+
+*.local

@@ -1,0 +1,47 @@
+---
+description: Recommended JS architecture and file responsibilities
+globs: js/**/*.js
+alwaysApply: false
+---
+
+# JavaScript Architecture Rules
+
+Keep modules focused and predictable.
+
+## `calculator.js`
+
+- Only math calculations.
+- No DOM access.
+- No localStorage access.
+
+## `datetime.js`
+
+- Handle time rules:
+  - lunch break skip
+  - working hours boundaries
+  - skip Sunday
+  - **deadline algorithm**
+
+## `storage.js`
+
+- Handle save/load to localStorage.
+- Provide small API (get/set/loadTasks/saveTasks, etc.).
+- Never manipulate DOM here.
+
+## `ui.js`
+
+- DOM queries and rendering only:
+  - dashboard cards
+  - progress bar
+  - task cards
+- Should call calculator/datetime/storage APIs.
+
+## `app.js`
+
+- Wire everything together.
+- Initialize state, load tasks, start realtime loop.
+
+## Related rules
+
+- Code quality, naming, boundaries: `09-clean-code-standards.mdc`
+- JSDoc, file headers, BA traceability: `10-documentation-and-ba.mdc`

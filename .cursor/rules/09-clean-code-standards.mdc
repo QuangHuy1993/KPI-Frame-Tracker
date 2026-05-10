@@ -1,0 +1,57 @@
+---
+description: Clean code, senior fullstack practices, boundaries (Vanilla JS/HTML/CSS)
+alwaysApply: true
+---
+
+# Clean Code & Fullstack Discipline
+
+**Vai trò khi code:** hành xử như **senior fullstack** — ranh giới lớp rõ, luồng dữ liệu dễ đoán, dễ bảo trì; không “nhồi” logic vào một file.
+
+## Nguyên tắc cốt lõi
+
+- **Single responsibility:** một hàm = một ý chính; một file = một lớp trách nhiệm (đã phân trong `07-js-architecture.mdc` — **phải tuân thủ**).
+- **DRY:** không copy-paste công thức KPI/deadline; gọi `Calculator` / `DateTime` thay vì nhân đôi.
+- **KISS:** ưu tiên giải pháp đơn giản đọc được; chỉ tối ưu khi đo được vấn đề hiệu năng.
+- **YAGNI:** không thêm abstraction/framework khi chưa có nhu cầu thật (đúng tech stack HTML/CSS/Vanilla JS).
+
+## Đặt tên & ngôn ngữ miền (domain)
+
+- Dùng thuật ngữ nghiệp vụ thống nhất: `frame`, `remainingFrames`, `framePerHour`, `workingMinutes`, `deadline`, `kpiStatus`, `rank`.
+- **Tránh** tên mơ hồ: `data`, `temp`, `handle`, `process` không có ngữ cảnh.
+- Hàm **động từ + đối tượng**: `computeRemainingMinutes`, `advancePastLunch`, `saveTasks`, `renderDashboard`.
+- Hằng số **UPPER_SNAKE** hoặc object `const Schedule = { ... }` — **cấm** magic number rải rác (ví dụ `60`, `8`, giờ 08:30 phải có tên hoặc gom trong `datetime`/config).
+
+## Hàm & tác dụng phụ (side effects)
+
+- **Pure** khi có thể: `calculator.js` chỉ nhận input → output; không đọc DOM/storage.
+- Tác dụng phụ **tập trung**: DOM ở `ui.js`, `localStorage` ở `storage.js`, đồng hồ/deadline ở `datetime.js`.
+- Độ dài hàm: **mục tiêu &lt; ~40 dòng**; nếu dài, tách bước có tên (`step1`, `step2` → hàm con có tên nghiệp vụ).
+
+## Ranh giới & validation
+
+- Validate input ở **biên** (load JSON, form submit, số âm, chia 0): trả giá trị an toàn hoặc báo lỗi rõ, **không** để `undefined` lan vào deadline loop.
+- `localStorage` corrupt/empty: fallback `[]` hoặc schema mặc định; không throw làm trắng app nếu có thể phục hồi.
+
+## HTML / CSS
+
+- HTML **semantic** (`main`, `section`, `label` gắn `for`/`id`, `button type="button"` khi không submit form).
+- Class đặt nhất quán (prefix hoặc BEM nhẹ); **ưu tiên token** từ `08-perspective-design-system.mdc`, không hard-code màu/spacing rải rác.
+- Không dùng `!important` để “vá” trừ khi có lý do ghi chú ngắn.
+
+## An toàn & bảo trì
+
+- Tránh `innerHTML` với dữ liệu người dùng chưa escape; ưu tiên `textContent` hoặc escape có chủ đích.
+- Mọi thay đổi **schema** task trong storage phải có **version** hoặc migration nhỏ (ghi trong `storage.js` / comment).
+
+## Anti-patterns (cấm)
+
+- Tính deadline bằng `Date + remainingMinutes` phút wall-clock — **trái** `04-deadline-core-logic.mdc`.
+- Gọi `document.querySelector` trong `calculator.js` / `datetime.js`.
+- File `app.js` phình to chứa toàn bộ business logic thay vì delegate.
+
+## Checklist trước khi coi xong một thay đổi
+
+- [ ] Logic đúng lớp (07)?
+- [ ] Không magic number / magic string lộn xộn?
+- [ ] Hàm có tên đọc được, side effect rõ?
+- [ ] Edge case (0 frame, hết task, Chủ nhật, giờ nghỉ) đã xử lý hoặc ghi chú?

@@ -1,0 +1,48 @@
+---
+description: KPI speed ranks and math formulas (frames/min/sec, progress, realtime)
+alwaysApply: true
+---
+
+# KPI Speed + Formula Rules
+
+## KPI speed rule (rank)
+
+- Rank **A**: 900 frame/day
+- Rank **B**: 700 frame/day
+
+Assume **8h/day** effective work time unless explicitly changed.
+
+## Core formulas (must remain consistent)
+
+- **Frame/hour**:
+  - `framePerHour = framePerDay / 8`
+- **Frame/minute**:
+  - `framePerMinute = framePerHour / 60`
+- **Minutes needed**:
+  - `minutesNeeded = totalFrames / framePerMinute`
+- **Remaining frames**:
+  - `remainingFrames = totalFrames - completedFrames`
+- **Remaining minutes**:
+  - `remainingMinutes = remainingFrames / framePerMinute`
+- **Frame/second**:
+  - `framePerSecond = framePerHour / 3600`
+- **Seconds/frame**:
+  - `secondsPerFrame = 3600 / framePerHour`
+- **Progress %**:
+  - `progressPercent = (completedFrames / totalFrames) * 100`
+- **Realtime performance (actual frame/hour)**:
+  - `actualFramePerHour = completedFrames / workedHours`
+
+## UI rules from formulas
+
+- Progress bar width:
+  - `progressWidth = progressPercent + "%"`
+- Realtime clock/update loop:
+  - `setInterval(..., 1000)` to update:
+    - current time
+    - remaining time
+    - KPI status
+- Danger warning:
+  - If `actualFramePerHour < requiredFramePerHour` show:
+    - `RISK OF MISSING KPI 💀`
+

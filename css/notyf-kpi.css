@@ -1,0 +1,31 @@
+/**
+ * Notyf — chỉnh typo & đổ bóng để khớp KPI Frame Tracker (Material Symbols đã load từ HTML).
+ */
+
+.notyf__toast {
+  border-radius: var(--kpi-timecalc-radius-xl, 12px);
+  font-family: var(--kpi-timecalc-font-body, "Hanken Grotesk", system-ui, sans-serif);
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow:
+    0 12px 28px rgba(3, 105, 161, 0.28),
+    0 4px 10px rgba(29, 27, 32, 0.08);
+}
+
+.notyf__toast .notyf__icon .material-symbols-outlined {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.notyf__toast .notyf__message {
+  padding: 2px 0;
+}
+
+/* Toast tab — xanh dương (đè ripple nền) */
+.notyf__toast.kpi-notyf--tab .notyf__ripple {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+}
+
+.notyf__toast.kpi-notyf--tab.notyf__toast {
+  color: #ffffff;
+}

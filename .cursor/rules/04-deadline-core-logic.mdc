@@ -1,0 +1,65 @@
+---
+description: Most important rule: working-minutes deadline algorithm
+alwaysApply: true
+---
+
+# Deadline Calculation Logic (CORE)
+
+This is the **most important** part of the system.
+
+## Inputs/outputs (conceptual)
+
+- Inputs:
+  - `currentDateTime`
+  - `totalFrames`
+  - `completedFrames`
+  - `framePerHour` (or derived from rank)
+- Output:
+  - `deadlineDateTime` (estimated finish time)
+
+## Step 1 — Remaining working minutes
+
+- `remainingFrames = totalFrames - completedFrames`
+- `framePerMinute = framePerHour / 60`
+- `remainingMinutes = remainingFrames / framePerMinute`
+
+## Step 2 — Loop through schedule blocks
+
+Pseudo logic (must follow this spirit):
+
+```js
+while (remainingMinutes > 0) {
+  if (isSunday(now)) now = nextMonday0830(now);
+  if (insideLunch(now)) now = today1300(now);
+  if (afterWork(now)) now = nextDay0830(now);
+  if (beforeWork(now)) now = today0830(now);
+
+  const available = minutesUntilNextBreakOrEndOfDay(now); // working minutes only
+  const used = Math.min(remainingMinutes, available);
+  now = addMinutes(now, used);
+  remainingMinutes -= used;
+}
+deadline = now;
+```
+
+## Step 3 — Auto-skip lunch break
+
+- 12:00 → 13:00 is non-working.
+- If a task crosses lunch, the algorithm must **skip** to 13:00 automatically (effectively adding 60 non-working minutes).
+
+## Step 4 — Auto-skip after work
+
+- If `currentTime > 17:30`, move to next day 08:30 before consuming remaining minutes.
+
+## Step 5 — Auto-skip Sunday
+
+- If `date.getDay() === 0`, move to next Monday 08:30.
+
+## Hard requirements
+
+- Deadline must be computed using **working minutes only**, not naive datetime addition.
+- The loop must be deterministic and safe for edge cases:
+  - exactly at 12:00 / 13:00 / 17:30 / 08:30
+  - remainingMinutes = 0
+  - completedFrames >= totalFrames
+

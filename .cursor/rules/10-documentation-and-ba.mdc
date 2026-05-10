@@ -1,0 +1,72 @@
+---
+description: Documentation depth, JSDoc, BA/requirements traceability
+alwaysApply: true
+---
+
+# Documentation & BA / Requirements Alignment
+
+**Vai trò khi viết docs:** như **BA + tech lead** — mỗi phần code “khớp” được với hành vi nghiệp vụ; người đọc sau hiểu **tại sao** và **giới hạn** chứ không chỉ **làm gì**.
+
+## Tài liệu theo cấp (bắt buộc tối thiểu)
+
+### 1. Đầu file (file-level)
+
+Ở đầu mỗi file `js/*.js`, thêm khối comment ngắn (JSDoc `@file` hoặc comment `/** ... */`):
+
+- **Mục đích** file (1–2 câu).
+- **Không làm gì** ở đây (non-goals) nếu dễ nhầm (ví dụ: `calculator.js` không biết giờ làm việc).
+- **Phụ thuộc** hợp lý: file này được gọi bởi đâu / gọi module nào (1 dòng).
+
+### 2. Hàm / API công khai
+
+Mọi hàm **export** (hoặc gắn `window.*` dùng như API module) **phải** có JSDoc:
+
+- `@param` — kiểu + ý nghĩa đơn vị (frame, phút **làm việc**, `Date`, v.v.).
+- `@returns` — kiểu + ý nghĩa; ghi `null`/`undefined` khi nào.
+- `@throws` — nếu cố ý throw; nếu không throw, ưu tiên return an toàn + ghi rõ.
+- `@example` — **1 ví dụ** ngắn với số liệu thực tế (rank A/B, 8h/ngày) khi hàm không tầm thường.
+
+### 3. Thuật toán quan trọng (deadline / lịch làm việc)
+
+Trong `datetime.js` (hoặc nơi implement), trước hàm deadline:
+
+- Mô tả **3–8 dòng** luồng: “chỉ trừ phút làm việc”, bỏ trưa, sau 17h30, Chủ nhật.
+- Ghi **`@see`** tới rule: `04-deadline-core-logic.mdc`, `02-time-work-schedule.mdc`.
+- Nếu có invariant (điều kiện luôn đúng sau vòng lặp), ghi 1 dòng.
+
+### 4. Công thức KPI
+
+Trong `calculator.js`, với công thức không tầm thường:
+
+- Một dòng tham chiếu **`03-kpi-speed-and-formulas.mdc`** hoặc công thức inline (comment) khớp spec.
+
+## Góc nhìn BA (traceability)
+
+- Khi implement tính năng mới, trong PR/commit message hoặc comment block ngắn trên `app.js` / entry: ghi **ID/user story giả định** hoặc “Maps to: …” (ví dụ: “Dashboard cards — rule 06-ui-structure”).
+- Chuỗi hiển thị cho user (tiếng Việt): **glossary thống nhất** — “deadline”, “KPI”, “frame”, “rank”; không đổi từ đồng nghĩa lung tung trên UI.
+
+## README dự án (khi có thay đổi hành vi)
+
+Cập nhật `README.md` (nếu tồn tại) khi:
+
+- Thêm/bớt key `localStorage`, đổi schema task.
+- Thay đổi lịch làm việc mặc định hoặc rank KPI.
+
+Nội dung tối thiểu: cách chạy (mở `index.html` hoặc static server), cấu trúc thư mục, nơi sửa công thức vs deadline.
+
+## Comment trong code: nên / không nên
+
+- **Nên:** giải thích **tại sao** (business rule, workaround trình duyệt, edge case).
+- **Không nên:** lặp lại đúng nội dung tên hàm (`// tăng i`); comment dài chép nguyên spec — thay bằng `@see` rule + 1 câu tóm.
+
+## Chất lượng tài liệu (quality gate)
+
+- Một dev mới đọc **chỉ** `calculator.js` + `datetime.js` vẫn hiểu **đơn vị** và **giới hạn** không cần hỏi lại.
+- Mọi hàm public có JSDoc đủ `@param`/`@returns` (và `@example` nếu logic không hiển ngay).
+- Thuật toán deadline có mô tả + link rule `04`.
+
+## Anti-patterns
+
+- Toàn file không có file-level doc.
+- Public function không JSDoc vì “code tự giải thích” — **không chấp nhận** với hàm domain (deadline, KPI, storage).
+- Ghi doc tiếng Anh lẫn tiếng Việt ngẫu nhiên trong cùng module — chọn **một** ngôn ngữ chính cho JSDoc (khuyến nghị **tiếng Anh** cho JSDoc, UI string tiếng Việt).

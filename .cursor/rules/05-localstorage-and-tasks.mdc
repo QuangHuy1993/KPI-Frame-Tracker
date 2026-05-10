@@ -1,0 +1,34 @@
+---
+description: Task persistence rules using localStorage
+alwaysApply: true
+---
+
+# localStorage Design Rules
+
+## Tasks must be saved/loaded
+
+- Save:
+
+```js
+localStorage.setItem("tasks", JSON.stringify(tasks));
+```
+
+- Load:
+
+```js
+const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+```
+
+## Auto-save triggers
+
+Must auto-save on every mutation:
+
+- add task
+- edit task
+- update progress
+
+## Data integrity rules
+
+- Always validate/normalize loaded tasks (handle missing fields).
+- Never crash if storage is empty/corrupt; fall back to defaults.
+

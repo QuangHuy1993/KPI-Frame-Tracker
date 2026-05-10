@@ -1,0 +1,78 @@
+---
+description: Perspective design system — tokens, typography, depth, accessibility
+globs: "**/*.{html,css}"
+alwaysApply: false
+---
+
+# Perspective Design System (this project)
+
+**Intent:** UI phải hiện đại, tương phản rõ, có cảm giác không gian (layer/shadow/isometric nhẹ) nhưng vẫn **WCAG 2.2 AA**, ưu tiên bàn phím và **focus-visible**.
+
+## Design tokens (must use in CSS)
+
+| Token | Value | Dùng cho |
+|-------|-------|----------|
+| `--color-primary` | `#00BD7D` | CTA, liên kết chính, accent |
+| `--color-secondary` | `#00BD7D` | Đồng bộ primary khi spec gọi secondary |
+| `--color-success` | `#16A34A` | KPI **ON TRACK** |
+| `--color-warning` | `#D97706` | KPI **WARNING** |
+| `--color-danger` | `#DC2626` | KPI **LATE**, lỗi |
+| `--color-surface` | `#FFFFFF` | Nền panel/card |
+| `--color-text` | `#111827` | Text chính |
+| `--color-neutral` | `#FFFFFF` | Tương thích spec; viền dùng `--color-border` (derived) |
+
+**Derived (should):** `--color-border` từ text ~12% opacity; `--color-muted` text phụ đạt contrast ≥ 4.5:1 trên surface.
+
+## Typography
+
+- **Display (h1, tiêu đề lớn):** Oswald, scale ví dụ **2rem**.
+- **Body:** Poppins, **1rem** (body-md).
+- **Label / meta / caps nhỏ:** JetBrains Mono, **0.75rem** (label-caps).
+- **Scale nguồn:** 12 / 14 / 16 / 20 / 24 / 32 (px hoặc rem tương đương).
+- **Weights:** 100–900 — ưu tiên 400 (body), 600–700 (heading/button).
+
+Load fonts qua một nguồn ổn định (ví dụ Google Fonts) với `font-display: swap`.
+
+## Spacing & radius
+
+- **Spacing scale:** 4, 8, 12, 16, 24, 32 → map `--space-1` … `--space-6`.
+- **Radius:** `--radius-sm: 4px`, `--radius-md: 8px` (cards/buttons ưu tiên `md`).
+
+## Spatial depth (Perspective)
+
+- **Do:** shadow nhiều lớp (ambient + directional nhẹ), tách lớp surface/z-index rõ, gradient nền tinh giản.
+- **Do:** hover/active có chuyển động nhỏ (translate/scale ≤ 2%) trên phần tử tương tác, không làm layout nhảy.
+- **Don't:** text mờ contrast thấp; shadow quá đậm che nội dung; animation liên tục gây chóng mặt.
+
+## Components — states bắt buộc (khi áp dụng)
+
+Controls (button, input, link): **default, hover, focus-visible, active, disabled**; form thêm **error** khi có validation.
+
+- **Focus-visible:** outline rõ (ví dụ 2px `var(--color-primary)`, offset 2px); không bỏ outline mà không thay thế.
+- **Keyboard:** thứ tự tab hợp lý; Enter/Space kích hoạt button.
+- **Touch:** vùng bấm tối thiểu ~44×44px hoặc padding tương đương.
+
+## KPI status → token
+
+- ON TRACK → `success`
+- WARNING → `warning`
+- LATE → `danger`
+
+## Content & tone
+
+- Nhãn ngắn, không mơ hồ; số liệu kèm đơn vị (frame, %, giờ).
+- Cảnh báo rủi ro: rõ ràng, không chỉ emoji (emoji chỉ bổ trợ).
+
+## Anti-patterns
+
+- Hard-code `#00BD7D` rải rác thay vì `var(--color-primary)`.
+- Dùng màu warning/danger cho text dài trên nền không đủ contrast.
+- Bỏ `focus-visible` để “đẹp hơn”.
+
+## QA checklist (review)
+
+- [ ] Mọi màu chữ trên `--color-surface` đạt AA (body ≥ 4.5:1).
+- [ ] Tab qua form/dashboard: focus luôn thấy.
+- [ ] Spacing chỉ dùng bộ `--space-*`.
+- [ ] Heading dùng Oswald, body Poppins, label mono đúng spec.
+- [ ] Trạng thái KPI map đúng success/warning/danger.

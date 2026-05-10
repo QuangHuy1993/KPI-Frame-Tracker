@@ -1,0 +1,28 @@
+---
+description: Tech stack constraints (HTML/CSS/Vanilla JS/localStorage)
+alwaysApply: true
+---
+
+# Tech Stack Rules
+
+## Frontend
+
+- Use **HTML5**, **CSS3**, **Vanilla JavaScript** only.
+- No frameworks (React/Vue/Angular), no build tools required.
+- Prefer plain `<script src="...">` modules (current structure: `js/*.js`).
+
+## Storage
+
+- Persist data using **localStorage** only.
+- Store app state under stable keys (e.g. `"tasks"`).
+- Must **auto-save** on:
+  - add task
+  - edit task
+  - update progress
+
+## Data format
+
+- Use JSON-serializable objects/arrays only.
+- On load, always handle empty storage gracefully:
+  - `JSON.parse(localStorage.getItem("tasks")) || []`
+

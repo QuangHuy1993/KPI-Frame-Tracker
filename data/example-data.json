@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-10",
+  "kpis": [
+    { "id": "focus", "name": "Deep work (minutes)", "value": 90 },
+    { "id": "exercise", "name": "Exercise (minutes)", "value": 30 },
+    { "id": "sleep", "name": "Sleep (hours)", "value": 7.5 }
+  ]
+}

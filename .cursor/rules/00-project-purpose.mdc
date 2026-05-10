@@ -1,0 +1,30 @@
+---
+description: Project purpose and core behaviors (deadline/KPI/workload)
+alwaysApply: true
+---
+
+# KPI Frame Tracker — Project Purpose
+
+## What this system must do
+
+- Track tasks measured in **frames**.
+- Compute **deadline** for remaining work time.
+- Track **KPI realtime** and **processing speed**.
+- Predict **finish time** (estimated completion datetime).
+- Manage workload and show risk warnings.
+- **Auto-skip non-working time**:
+  - Lunch break
+  - After-work hours
+  - Sundays (and future: holidays)
+
+## Non-negotiables
+
+- The **deadline calculation** must exclude:
+  - 12:00–13:00 lunch
+  - after 17:30 until next day 08:30
+  - Sundays
+- UI must update **realtime (every 1s)** for:
+  - current time
+  - remaining time
+  - KPI status
+
