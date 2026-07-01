@@ -820,3 +820,293 @@
   }
 }
 
+/* ==========================================
+   KPI Frame Tracker - New Features Styling
+   ========================================== */
+
+/* Clickable deadline cards */
+.kpi-deadline-card {
+  cursor: pointer;
+  position: relative;
+  border: 2px solid transparent !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--kpi-timecalc-radius-lg);
+}
+.kpi-deadline-card:hover {
+  border-color: var(--kpi-timecalc-color-outline-variant) !important;
+  background-color: rgba(103, 80, 164, 0.03) !important;
+  transform: translateY(-2px);
+}
+.kpi-deadline-card--selected {
+  border-color: var(--kpi-timecalc-color-primary) !important;
+  background-color: color-mix(in srgb, var(--kpi-timecalc-color-primary) 6%, #ffffff) !important;
+  box-shadow: 0 8px 16px rgba(103, 80, 164, 0.12) !important;
+}
+.kpi-deadline-card__indicator {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--kpi-timecalc-color-outline);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.kpi-deadline-card--selected .kpi-deadline-card__indicator {
+  color: var(--kpi-timecalc-color-primary);
+}
+.kpi-deadline-card__indicator .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* List views for ranks/members management */
+.kpi-list-view {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kpi-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: var(--kpi-timecalc-radius-lg);
+  border: 1px solid var(--kpi-timecalc-color-outline-variant);
+  background-color: var(--kpi-timecalc-color-surface-container);
+  font-size: 14px;
+  transition: background-color 0.15s;
+  cursor: pointer;
+}
+.kpi-list-item:hover {
+  background-color: var(--kpi-timecalc-color-surface-container-highest);
+}
+.kpi-list-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kpi-list-item__name {
+  font-weight: 600;
+  color: var(--kpi-timecalc-color-on-surface);
+}
+.kpi-list-item__meta {
+  font-size: 12px;
+  color: var(--kpi-timecalc-color-on-surface-variant);
+}
+.kpi-list-item__actions {
+  display: flex;
+  gap: 6px;
+}
+.kpi-list-item__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kpi-timecalc-color-outline);
+  transition: all 0.15s;
+}
+.kpi-list-item__btn:hover {
+  background-color: rgba(103, 80, 164, 0.08);
+  color: var(--kpi-timecalc-color-primary);
+}
+.kpi-list-item__btn--danger:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* Responsive grid for member task cards */
+.kpi-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--kpi-timecalc-space-md);
+  margin-top: 4px;
+}
+@media (min-width: 640px) {
+  .kpi-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1280px) {
+  .kpi-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Premium Card Design for active tasks */
+.kpi-task-card {
+  border-radius: var(--kpi-timecalc-radius-xl);
+  border: 2px solid var(--kpi-timecalc-color-outline-variant);
+  background-color: #ffffff;
+  padding: var(--kpi-timecalc-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(29, 27, 32, 0.04);
+}
+.kpi-task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(29, 27, 32, 0.08);
+}
+
+/* Custom indicator border colors depending on time status */
+.kpi-task-card--green {
+  border-color: #16a34a !important;
+  background: linear-gradient(180deg, rgba(22, 163, 74, 0.015) 0%, #ffffff 100%);
+}
+.kpi-task-card--yellow {
+  border-color: #d97706 !important;
+  background: linear-gradient(180deg, rgba(217, 119, 6, 0.015) 0%, #ffffff 100%);
+}
+.kpi-task-card--red {
+  border-color: #dc2626 !important;
+  background: linear-gradient(180deg, rgba(220, 38, 38, 0.015) 0%, #ffffff 100%);
+}
+
+.kpi-task-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--kpi-timecalc-color-outline-variant);
+  padding-bottom: 8px;
+}
+.kpi-task-card__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--kpi-timecalc-color-on-surface);
+  margin: 0;
+}
+.kpi-task-card__badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--kpi-timecalc-radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.kpi-task-card--green .kpi-task-card__badge {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+.kpi-task-card--yellow .kpi-task-card__badge {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+.kpi-task-card--red .kpi-task-card__badge {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.kpi-task-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+}
+.kpi-task-card__row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--kpi-timecalc-color-on-surface-variant);
+}
+.kpi-task-card__value {
+  font-weight: 600;
+  color: var(--kpi-timecalc-color-on-surface);
+}
+.kpi-task-card__deadline-section {
+  background-color: var(--kpi-timecalc-color-surface-container);
+  border-radius: var(--kpi-timecalc-radius-lg);
+  padding: 8px 12px;
+  margin-top: 4px;
+}
+.kpi-task-card__deadline-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--kpi-timecalc-color-outline);
+  margin-bottom: 2px;
+  letter-spacing: 0.05em;
+}
+.kpi-task-card__deadline-value {
+  font-family: var(--kpi-timecalc-font-data);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--kpi-timecalc-color-primary);
+}
+.kpi-task-card__countdown {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.kpi-task-card--green .kpi-task-card__countdown {
+  color: #16a34a;
+}
+.kpi-task-card--yellow .kpi-task-card__countdown {
+  color: #d97706;
+}
+.kpi-task-card--red .kpi-task-card__countdown {
+  color: #dc2626;
+}
+
+.kpi-task-card__footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  border-top: 1px solid var(--kpi-timecalc-color-outline-variant);
+  padding-top: 10px;
+}
+.kpi-task-card__btn {
+  flex: 1;
+  min-height: 34px;
+  border: 1px solid var(--kpi-timecalc-color-outline-variant);
+  border-radius: var(--kpi-timecalc-radius-lg);
+  background-color: #ffffff;
+  color: var(--kpi-timecalc-color-on-surface-variant);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.15s;
+}
+.kpi-task-card__btn:hover {
+  background-color: var(--kpi-timecalc-color-surface-container);
+  color: var(--kpi-timecalc-color-on-surface);
+}
+.kpi-task-card__btn--danger:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+/* Layout for tab 3 columns (override on desktop) */
+.kpi-timecalc-layout-left {
+  grid-column: span 12;
+}
+.kpi-timecalc-layout-right {
+  grid-column: span 12;
+}
+@media (min-width: 1024px) {
+  .kpi-timecalc-layout-left {
+    grid-column: span 4;
+  }
+  .kpi-timecalc-layout-right {
+    grid-column: span 8;
+  }
+}
+
+

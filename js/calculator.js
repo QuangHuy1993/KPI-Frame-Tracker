@@ -6,7 +6,7 @@
    * @see .cursor/rules/03-kpi-speed-and-formulas.mdc
    */
 
-  const WORKING_HOURS_PER_DAY = 8;
+  const WORKING_HOURS_PER_DAY = 7.75;
   const SPEED_RANKS = Object.freeze({
     A: 900,
     B: 700,

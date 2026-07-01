@@ -29,15 +29,15 @@
         </div>
 
         <nav class="kpi-timecalc-tabs" aria-label="Điều hướng chính">
-          <span class="kpi-timecalc-tabs__link kpi-timecalc-tabs__link--active" aria-current="page">
+          <a class="kpi-timecalc-tabs__link kpi-timecalc-tabs__link--active" href="#" data-kpi-tab-trigger="schedule">
             <span class="material-symbols-outlined kpi-timecalc-tabs__icon" aria-hidden="true">schedule</span>
             <span>Tính thời gian</span>
-          </span>
-          <a class="kpi-timecalc-tabs__link" href="#" data-kpi-timecalc-tab="rank">
+          </a>
+          <a class="kpi-timecalc-tabs__link" href="#" data-kpi-tab-trigger="rank">
             <span class="material-symbols-outlined kpi-timecalc-tabs__icon" aria-hidden="true">layers</span>
             <span>Rank &amp; Frame</span>
           </a>
-          <a class="kpi-timecalc-tabs__link" href="#" data-kpi-timecalc-tab="member">
+          <a class="kpi-timecalc-tabs__link" href="#" data-kpi-tab-trigger="member">
             <span class="material-symbols-outlined kpi-timecalc-tabs__icon" aria-hidden="true">group</span>
             <span>Thành viên</span>
           </a>
@@ -48,18 +48,35 @@
     </header>
 
     <main class="kpi-timecalc-main">
-      <div class="kpi-timecalc-layout">
-        <div class="kpi-timecalc-layout__col-form">
-          <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel">
-            <div class="kpi-timecalc-form-panel__heading-row">
-              <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
-              <h2 class="kpi-timecalc-form-panel__title">Tính toán tiến độ</h2>
-            </div>
+      <!-- TAB 1: TÍNH THỜI GIAN -->
+      <div id="kpi-tab-content-schedule" class="kpi-tab-content">
+        <div class="kpi-timecalc-layout">
+          <div class="kpi-timecalc-layout__col-form">
+            <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel">
+              <div class="kpi-timecalc-form-panel__heading-row">
+                <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
+                <h2 class="kpi-timecalc-form-panel__title">Tính toán tiến độ</h2>
+              </div>
 
-            <form id="kpi-timecalc-form" class="kpi-timecalc-form-panel__form" novalidate>
-              <div class="kpi-timecalc-form-grid kpi-timecalc-form-grid--simple">
-                <div class="kpi-timecalc-field kpi-timecalc-field--full">
-                  <label class="kpi-timecalc-field__label" for="kpi-timecalc-start">Ngày / giờ bắt đầu làm</label>
+              <form id="kpi-timecalc-form" class="kpi-timecalc-form-panel__form" novalidate>
+                <div class="kpi-timecalc-form-grid kpi-timecalc-form-grid--simple">
+                  <div class="kpi-timecalc-field kpi-timecalc-field--full">
+                    <label class="kpi-timecalc-field__label" for="kpi-timecalc-member">Thành viên làm việc</label>
+                    <select
+                      id="kpi-timecalc-member"
+                      name="memberId"
+                      class="kpi-timecalc-field__input kpi-timecalc-field__input--select-native"
+                      required
+                    >
+                      <!-- Đổ động danh sách thành viên ở đây -->
+                    </select>
+                    <p class="kpi-timecalc-field__hint">
+                      Chọn thành viên để áp dụng tốc độ làm việc theo Rank (hoặc tốc độ cá nhân).
+                    </p>
+                  </div>
+
+                  <div class="kpi-timecalc-field kpi-timecalc-field--full">
+                    <label class="kpi-timecalc-field__label" for="kpi-timecalc-start">Ngày / giờ bắt đầu làm</label>
                   <input
                     id="kpi-timecalc-start"
                     name="startAt"
@@ -119,7 +136,7 @@
                       autocomplete="off"
                     />
                     <p class="kpi-timecalc-field__hint">
-                      Quy đổi: frame/giờ = giá trị này ÷ 8 (giờ làm/ngày).
+                      Quy đổi: frame/giờ = giá trị này ÷ 7.75 (giờ làm/ngày).
                     </p>
                   </div>
 
@@ -162,10 +179,14 @@
                 </div>
               </div>
 
-              <div class="kpi-timecalc-form-panel__actions">
-                <button type="submit" class="kpi-timecalc-form-panel__submit">
+              <div class="kpi-timecalc-form-panel__actions" style="display: flex; flex-direction: column; gap: var(--kpi-timecalc-space-sm); width: 100%;">
+                <button type="submit" class="kpi-timecalc-form-panel__submit" style="width: 100%;">
                   <span class="material-symbols-outlined" aria-hidden="true">calculate</span>
                   Tính thời gian
+                </button>
+                <button type="button" id="kpi-timecalc-save-btn" class="kpi-timecalc-form-panel__submit kpi-timecalc-form-panel__submit--save" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" disabled>
+                  <span class="material-symbols-outlined" aria-hidden="true">save</span>
+                  Lưu dữ liệu tiến độ
                 </button>
               </div>
             </form>
@@ -192,19 +213,24 @@
               </div>
             </div>
 
-            <div class="kpi-timecalc-metric kpi-timecalc-metric--highlight">
+            <div id="kpi-card-deadline-base" class="kpi-timecalc-metric kpi-timecalc-metric--highlight kpi-deadline-card kpi-deadline-card--selected">
               <div class="kpi-timecalc-metric__label-row">
                 <span class="material-symbols-outlined" aria-hidden="true">event_available</span>
                 <span class="kpi-timecalc-metric__label">Dự kiến hoàn thành</span>
               </div>
-              <p class="kpi-timecalc-metric__caption">Theo tốc độ nhập &amp; ca 08:30–12:00, 13:00–17:30 (không tính Chủ nhật)</p>
+              <p class="kpi-timecalc-metric__caption">Theo tốc độ nhập &amp; ca 08:30–12:00, 13:15–17:30 (không tính Chủ nhật)</p>
               <div class="kpi-timecalc-metric__datetime">
                 <span id="kpi-timecalc-result-time" class="kpi-timecalc-metric__time">—</span>
                 <span id="kpi-timecalc-result-date" class="kpi-timecalc-metric__date">—</span>
+                <span id="kpi-timecalc-result-member" class="kpi-timecalc-metric__member" style="display: block; font-size: 13px; font-weight: 600; color: var(--kpi-timecalc-color-primary); margin-top: 4px;"></span>
+              </div>
+              <div class="kpi-deadline-card__indicator">
+                <span class="material-symbols-outlined">check_circle</span>
+                <span>Đang chọn</span>
               </div>
             </div>
 
-            <div id="kpi-timecalc-safe-wrap" class="kpi-timecalc-metric kpi-timecalc-metric--buffer" hidden>
+            <div id="kpi-timecalc-safe-wrap" class="kpi-timecalc-metric kpi-timecalc-metric--buffer kpi-deadline-card" hidden>
               <div class="kpi-timecalc-metric__label-row">
                 <span class="material-symbols-outlined" aria-hidden="true">shield_with_heart</span>
                 <span class="kpi-timecalc-metric__label">Ước tính an toàn (có đệm)</span>
@@ -213,6 +239,11 @@
               <div class="kpi-timecalc-metric__datetime">
                 <span id="kpi-timecalc-result-time-safe" class="kpi-timecalc-metric__time kpi-timecalc-metric__time--secondary">—</span>
                 <span id="kpi-timecalc-result-date-safe" class="kpi-timecalc-metric__date">—</span>
+                <span id="kpi-timecalc-result-member-safe" class="kpi-timecalc-metric__member" style="display: block; font-size: 13px; font-weight: 600; color: var(--kpi-timecalc-color-primary); margin-top: 4px;"></span>
+              </div>
+              <div class="kpi-deadline-card__indicator">
+                <span class="material-symbols-outlined">radio_button_unchecked</span>
+                <span>Chọn</span>
               </div>
             </div>
 
@@ -228,11 +259,136 @@
             <div class="kpi-timecalc-note">
               <span class="material-symbols-outlined" aria-hidden="true">info</span>
               <p class="kpi-timecalc-note__text">
-                Thời gian đã tự động loại trừ giờ nghỉ trưa (12:00–13:00), ngoài giờ làm việc và ngày Chủ nhật — cùng logic hệ thống KPI.
+                Thời gian đã tự động loại trừ giờ nghỉ trưa (12:00–13:15), ngoài giờ làm việc và ngày Chủ nhật — cùng logic hệ thống KPI.
               </p>
             </div>
           </div>
         </aside>
+      </div>
+      </div>
+
+      <!-- TAB 2: RANK & FRAME -->
+      <div id="kpi-tab-content-rank" class="kpi-tab-content" style="display: none;">
+        <div class="kpi-timecalc-layout">
+          <div class="kpi-timecalc-layout-left">
+            <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel">
+              <div class="kpi-timecalc-form-panel__heading-row">
+                <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
+                <h2 class="kpi-timecalc-form-panel__title">Cấu hình Rank</h2>
+              </div>
+              <form id="kpi-rank-form" class="kpi-timecalc-form-panel__form" novalidate style="gap: 12px;">
+                <input type="hidden" id="kpi-rank-id" />
+                <div class="kpi-timecalc-form-grid" style="grid-template-columns: 1fr; gap: 12px;">
+                  <div class="kpi-timecalc-field">
+                    <label class="kpi-timecalc-field__label" for="kpi-rank-code">Ký hiệu Rank (A, B, C...)</label>
+                    <input id="kpi-rank-code" class="kpi-timecalc-field__input" type="text" placeholder="VD: A" required style="min-height: 38px;" />
+                  </div>
+                  <div class="kpi-timecalc-field">
+                    <label class="kpi-timecalc-field__label" for="kpi-rank-name">Tên Rank hiển thị</label>
+                    <input id="kpi-rank-name" class="kpi-timecalc-field__input" type="text" placeholder="VD: Rank A" required style="min-height: 38px;" />
+                  </div>
+                  <div class="kpi-timecalc-field">
+                    <label class="kpi-timecalc-field__label" for="kpi-rank-requirements">Yêu cầu Frame / Ngày</label>
+                    <input id="kpi-rank-requirements" class="kpi-timecalc-field__input" type="text" placeholder="VD: 900" required style="min-height: 38px;" />
+                    <p class="kpi-timecalc-field__hint">Nhập giá trị số frame/ngày của rank (Ví dụ: 900 hoặc 700).</p>
+                  </div>
+                </div>
+                <div class="kpi-timecalc-form-panel__actions" style="margin-top: 12px; display: flex; gap: 8px;">
+                  <button type="submit" class="kpi-timecalc-form-panel__submit" style="padding: 8px 16px; min-height: 38px; font-size: 14px; flex: 1;">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">save</span> Lưu Rank
+                  </button>
+                  <button type="button" id="kpi-rank-reset" class="kpi-timecalc-form-panel__submit" style="padding: 8px 16px; min-height: 38px; font-size: 14px; background-color: var(--kpi-timecalc-color-surface-container-highest); color: var(--kpi-timecalc-color-on-surface-variant); border: 1px solid var(--kpi-timecalc-color-outline-variant); flex: 1;">
+                    Hủy
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div class="kpi-timecalc-layout-right">
+            <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel">
+              <div class="kpi-timecalc-form-panel__heading-row">
+                <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
+                <h2 class="kpi-timecalc-form-panel__title" style="font-size: 20px;">Danh sách các Rank</h2>
+              </div>
+              <ul id="kpi-rank-list" class="kpi-list-view">
+                <!-- Ranks populated here -->
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: THÀNH VIÊN -->
+      <div id="kpi-tab-content-member" class="kpi-tab-content" style="display: none;">
+        <div class="kpi-timecalc-layout">
+          <!-- Left: Member Form & List (span 4 on desktop) -->
+          <div class="kpi-timecalc-layout-left">
+            <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel">
+              <div class="kpi-timecalc-form-panel__heading-row">
+                <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
+                <h2 class="kpi-timecalc-form-panel__title" style="font-size: 20px;">Cấu hình Nhân sự</h2>
+              </div>
+              <form id="kpi-member-form" class="kpi-timecalc-form-panel__form" novalidate style="gap: 12px;">
+                <input type="hidden" id="kpi-member-id" />
+                <div class="kpi-timecalc-form-grid" style="grid-template-columns: 1fr; gap: 12px;">
+                  <div class="kpi-timecalc-field">
+                    <label class="kpi-timecalc-field__label" for="kpi-member-name">Tên nhân viên</label>
+                    <input id="kpi-member-name" class="kpi-timecalc-field__input" type="text" placeholder="VD: Nguyễn Văn A" required style="min-height: 38px;" />
+                  </div>
+                  <div class="kpi-timecalc-field">
+                    <label class="kpi-timecalc-field__label" for="kpi-member-rank">Rank KPI</label>
+                    <select id="kpi-member-rank" class="kpi-timecalc-field__input kpi-timecalc-field__input--select-native" required style="min-height: 38px;">
+                      <!-- Populated dynamically -->
+                    </select>
+                  </div>
+                  <div class="kpi-timecalc-field">
+                    <label class="kpi-timecalc-field__label" for="kpi-member-override">Tốc độ làm việc (frame/ngày)</label>
+                    <input id="kpi-member-override" class="kpi-timecalc-field__input" type="number" step="any" min="0" placeholder="Mặc định theo Rank" style="min-height: 38px;" />
+                  </div>
+                </div>
+                <div class="kpi-timecalc-form-panel__actions" style="margin-top: 12px; display: flex; gap: 8px;">
+                  <button type="submit" class="kpi-timecalc-form-panel__submit" style="padding: 8px 16px; min-height: 38px; font-size: 14px; flex: 1;">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">save</span> Lưu nhân sự
+                  </button>
+                  <button type="button" id="kpi-member-reset" class="kpi-timecalc-form-panel__submit" style="padding: 8px 16px; min-height: 38px; font-size: 14px; background-color: var(--kpi-timecalc-color-surface-container-highest); color: var(--kpi-timecalc-color-on-surface-variant); border: 1px solid var(--kpi-timecalc-color-outline-variant); flex: 1;">
+                    Hủy
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel" style="margin-top: 16px;">
+              <div class="kpi-timecalc-form-panel__heading-row">
+                <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
+                <h2 class="kpi-timecalc-form-panel__title" style="font-size: 18px;">Danh sách nhân sự</h2>
+              </div>
+              <div class="kpi-list-container" style="max-height: 250px; overflow-y: auto;">
+                <ul id="kpi-member-list" class="kpi-list-view">
+                  <!-- Members populated dynamically -->
+                </ul>
+              </div>
+            </section>
+          </div>
+
+          <!-- Right: Dashboard of Active Tasks (span 8 on desktop) -->
+          <div class="kpi-timecalc-layout-right">
+            <section class="kpi-timecalc-form-panel kpi-timecalc-glass-panel" style="height: 100%; min-height: 500px;">
+              <div class="kpi-timecalc-form-panel__heading-row" style="justify-content: space-between; border-bottom: 1px solid var(--kpi-timecalc-color-outline-variant); padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: var(--kpi-timecalc-space-sm);">
+                  <span class="kpi-timecalc-form-panel__accent" aria-hidden="true"></span>
+                  <h2 class="kpi-timecalc-form-panel__title" style="font-size: 22px;">Bảng tiến độ thành viên</h2>
+                </div>
+                <span class="kpi-timecalc-aside__badge" style="background-color: var(--kpi-timecalc-color-primary-fixed); color: var(--kpi-timecalc-color-primary);">REALTIME</span>
+              </div>
+              
+              <!-- Cards Container Grid -->
+              <div id="kpi-dashboard-grid" class="kpi-dashboard-grid">
+                <!-- Cards render here -->
+              </div>
+            </section>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -240,6 +396,7 @@
     <script src="js/smooth-scroll.js"></script>
     <script src="js/calculator.js"></script>
     <script src="js/datetime.js"></script>
+    <script src="js/storage.js"></script>
     <script src="https://unpkg.com/notyf@3.10.0/notyf.min.js"></script>
     <script src="js/page-time-calculation.js"></script>
   </body>

@@ -10,7 +10,7 @@
   const SCHEDULE = Object.freeze({
     WORK_START: 8 * 60 + 30, // 08:30
     LUNCH_START: 12 * 60, // 12:00
-    LUNCH_END: 13 * 60, // 13:00
+    LUNCH_END: 13 * 60 + 15, // 13:15
     WORK_END: 17 * 60 + 30, // 17:30
   });
   const WORKING_MINUTES_PER_DAY =
